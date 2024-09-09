@@ -2,19 +2,29 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
 import { CiSearch } from "react-icons/ci";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Left>
-        <Logo>
-          <img src={logo} />
+        <Logo onClick={() => navigate("/")}>
+          <img src={logo} alt="로고" />
         </Logo>
         <Menu>
-          <p>영화</p>
-          <p>시리즈</p>
-          <p>책</p>
-          <p>웹툰</p>
+          <p>
+            <Link to="/">영화</Link>
+          </p>
+          <p>
+            <Link to="/">시리즈</Link>
+          </p>
+          <p>
+            <Link to="/">책</Link>
+          </p>
+          <p>
+            <Link to="/">웹툰</Link>
+          </p>
         </Menu>
       </Left>
       <Right>
@@ -45,6 +55,7 @@ const Left = styled.div`
 const Logo = styled.div`
   width: 150px;
   margin-right: 30px;
+  cursor: pointer;
   img {
     width: 100%;
   }
@@ -56,6 +67,10 @@ const Menu = styled.div`
   gap: 30px;
   color: gray;
   font-size: 15px;
+
+  p {
+    cursor: pointer;
+  }
 `;
 const Right = styled.div`
   display: flex;
