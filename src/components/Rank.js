@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Poster from "../assets/Poster.jpg";
+import { GetRank } from "../api/MainApi";
 
 const Rank = () => {
+  const [rankData, setRankData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await GetRank();
+        setRankData(result.data.results);
+      } catch (error) {
+        console.error("영화순위 조회 에러:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <Title>박스오피스 순위</Title>
       <CardBox>
-        <Card>
-          <RankNum>1</RankNum>
-          <img src={Poster} alt="포스터"></img>
-          <Info>
-            <Name>베테랑2</Name>
-            <Date>2024 • 한국</Date>
-            <Text> 예매율 51% • 누적 관객 100명</Text>
-          </Info>
-        </Card>
+        {rankData.map((movie, index) => (
+          <Card key={movie.id}>
+            <RankNum>{index + 1}</RankNum>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <Info>
+              <Name>{movie.title}</Name>
+              <Date>
+                {movie.release_date.split("-")[0]} •{" "}
+                {movie.original_language === "ko" ? "한국" : "외국"}
+              </Date>
+              <Text>
+                {" "}
+                예매율 {movie.vote_average}% • 누적 관객{" "}
+                {Math.round(movie.popularity)}명
+              </Text>
+            </Info>
+          </Card>
+        ))}
       </CardBox>
     </Container>
   );
