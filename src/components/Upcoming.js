@@ -1,22 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Poster from "../assets/Poster.jpg";
+import { GetUpcoming } from "../api/MainApi";
 
 const Upcoming = () => {
+  const [upcomingData, setUpcomingData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await GetUpcoming();
+        setUpcomingData(result.data.results);
+      } catch (error) {
+        console.error("개봉작 조회 에러: ", error);
+      }
+    };
+    fetchData();
+  });
+
   return (
     <Container>
       <Title>공개 예정작</Title>
       <CardBox>
-        <Card>
-          <RankNum> D-2 </RankNum>
-          <img src={Poster} alt="포스터"></img>
-          <Info>
-            <Name>베테랑2</Name>
-            <Date>
-              넷플릭스 <span>2024.09.08</span>
-            </Date>
-          </Info>
-        </Card>
+        {upcomingData.map((movie) => (
+          <Card key={movie.id}>
+            <RankNum> D-2 </RankNum>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <Info>
+              <Name>{movie.title}</Name>
+              <Date>
+                넷플릭스 <span>{movie.release_date}</span>
+              </Date>
+            </Info>
+          </Card>
+        ))}
       </CardBox>
     </Container>
   );
