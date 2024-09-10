@@ -15,7 +15,7 @@ const Home = () => {
 };
 
 const Container = styled.div`
-  width: 93%;
+  width: 90%;
   margin: auto;
   display: flex;
   flex-direction: column;
