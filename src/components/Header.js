@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate, Link } from "react-router-dom";
+import LoginModal from "./Login";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <Container>
       <Left>
@@ -32,7 +37,8 @@ const Header = () => {
           <CiSearch />
           <Search placeholder="콘텐츠, 인물, 컬렉션, 유저를 검색해보세요."></Search>
         </SearchBox>
-        <Login>로그인</Login>
+        <Login onClick={openModal}>로그인</Login>
+        <LoginModal isOpen={isModalOpen} closeModal={closeModal} />
         <Signup>회원가입</Signup>
       </Right>
     </Container>
@@ -44,7 +50,7 @@ const Container = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
-  padding: 10px 80px;
+  padding: 10px 5vw;
   border-bottom: 1px solid #ddd;
 `;
 
