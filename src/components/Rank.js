@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Poster from "../assets/Poster.jpg";
 
 const Rank = () => {
   return (
@@ -8,7 +9,7 @@ const Rank = () => {
       <CardBox>
         <Card>
           <RankNum>1</RankNum>
-          <img alt="포스터"></img>
+          <img src={Poster} alt="포스터"></img>
           <Info>
             <Name>베테랑2</Name>
             <Date>2024 • 한국</Date>
@@ -41,6 +42,7 @@ const Card = styled.div`
   height: 350px;
   border-radius: 5px;
   flex: 0 0 auto;
+  position: relative;
 
   img {
     width: 200px;
