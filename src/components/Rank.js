@@ -38,15 +38,17 @@ const CardBox = styled.div`
   gap: 15px;
 `;
 const Card = styled.div`
-  width: 200px;
-  height: 350px;
+  width: 250px;
+  height: 450px;
   border-radius: 5px;
   flex: 0 0 auto;
   position: relative;
 
   img {
-    width: 200px;
-    height: 270px;
+    width: 250px;
+    height: 350px;
+    border-radius: 5px;
+    margin-bottom: 5px;
   }
 `;
 const RankNum = styled.div`
@@ -61,6 +63,7 @@ const RankNum = styled.div`
   margin-top: 5px;
   text-align: center;
   padding-top: 5px;
+  font-weight: bold;
 `;
 const Info = styled.div`
   line-height: 1.3em;
