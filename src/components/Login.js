@@ -68,7 +68,7 @@ const Content = styled.div`
   background-color: #fff;
   border-radius: 8px;
   padding: 20px 0px;
-  width: 34%;
+  width: 380px;
   height: auto;
   display: flex;
   align-items: center;
