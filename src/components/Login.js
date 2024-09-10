@@ -6,10 +6,16 @@ import google from "../assets/icon_google.png";
 import twitter from "../assets/icon_twitter.png";
 import line from "../assets/icon_line.png";
 
-const Login = ({ isOpen }) => {
+const Login = ({ isOpen, closeModal }) => {
+  const handleClose = (e) => {
+    e.stopPropagation();
+    closeModal();
+  };
+  if (!isOpen) return null;
+
   return (
-    <Overlay style={{ display: isOpen ? "block" : "none" }}>
-      <Content>
+    <Overlay onClick={handleClose}>
+      <Content onClick={(e) => e.stopPropagation()}>
         <Img src={logo} alt="로고" />
         <Title>로그인</Title>
         <InputBox>
@@ -61,8 +67,8 @@ const Content = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   border-radius: 8px;
-  padding: 30px 0px;
-  width: 30%;
+  padding: 20px 0px;
+  width: 34%;
   height: auto;
   display: flex;
   align-items: center;
@@ -70,8 +76,9 @@ const Content = styled.div`
 `;
 
 const Img = styled.img`
-  width: 58%;
+  width: 56%;
   height: auto;
+  margin-top: 10px;
 `;
 
 const Title = styled.h1`
