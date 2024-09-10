@@ -3,9 +3,14 @@ import styled from "styled-components";
 import adv from "../assets/adv.png";
 
 const Banner = () => {
+  const url = "https://pedia.watcha.com/ko-KR/notices/763";
   return (
     <Container>
-      <Img>
+      <Img
+        onClick={() => {
+          window.open(url);
+        }}
+      >
         <img src={adv} alt="배너" />
       </Img>
     </Container>
