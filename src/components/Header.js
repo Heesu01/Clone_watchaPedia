@@ -52,6 +52,9 @@ const Container = styled.div`
   align-items: center;
   padding: 10px 5vw;
   border-bottom: 1px solid #ddd;
+  position: fixed;
+  background-color: #fff;
+  z-index: 999;
 `;
 
 const Left = styled.div`
