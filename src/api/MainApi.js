@@ -20,3 +20,10 @@ export const GetMovie = async (id) => {
     data: response.data,
   };
 };
+
+export const GetImage = async (id) => {
+  const response = await Axios.get(`/movie/${id}/images`);
+  return {
+    data: response.data,
+  };
+};
