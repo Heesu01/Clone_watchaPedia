@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import back from "../assets/adv.png";
+import { useParams } from "react-router-dom";
+import { GetImage } from "../api/MainApi";
 
 const Gallery = () => {
+  const { id } = useParams();
+  const [movieImg, setMovieImg] = useState([]);
+
+  useEffect(() => {
+    const fetchMovieImg = async () => {
+      try {
+        const result = await GetImage(id);
+        setMovieImg(result.data.backdrops.slice(0, 10));
+      } catch (error) {
+        console.error("이미지조회 에러: ", error);
+      }
+    };
+    fetchMovieImg();
+  }, [id]);
+
+  if (!movieImg || movieImg.length === 0) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <Container>
       <Content>
         <Title>갤러리</Title>
         <PictureBox>
-          <Picture src={back} alt="갤러리사진" />
-          <Picture src={back} alt="갤러리사진" />
-          <Picture src={back} alt="갤러리사진" />
-          <Picture src={back} alt="갤러리사진" />
+          {movieImg.map((img, index) => (
+            <Picture
+              key={index}
+              src={`https://image.tmdb.org/t/p/w500${img.file_path}`}
+              alt={`갤러리 사진 ${index + 1}`}
+            />
+          ))}
         </PictureBox>
       </Content>
     </Container>

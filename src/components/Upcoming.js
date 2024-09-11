@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { GetUpcoming } from "../api/MainApi";
+import { useNavigate } from "react-router-dom";
 
 const Upcoming = () => {
   const [upcomingData, setUpcomingData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,14 +17,14 @@ const Upcoming = () => {
       }
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <Container>
       <Title>공개 예정작</Title>
       <CardBox>
         {upcomingData.map((movie) => (
-          <Card key={movie.id}>
+          <Card key={movie.id} onClick={() => navigate(`/movie/${movie.id}`)}>
             <RankNum> D-2 </RankNum>
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -63,6 +65,7 @@ const Card = styled.div`
   border-radius: 5px;
   flex: 0 0 auto;
   position: relative;
+  cursor: pointer;
 
   img {
     width: 250px;

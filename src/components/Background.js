@@ -1,18 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import back from "../assets/adv.png";
+import { useParams } from "react-router-dom";
+import { GetMovie } from "../api/MainApi";
 
 const Background = () => {
+  const { id } = useParams();
+  const [movieDetails, setMovieDetails] = useState(null);
+
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const result = await GetMovie(id);
+        setMovieDetails(result.data);
+      } catch (error) {
+        console.error("영화상세조회 에러: ", error);
+      }
+    };
+    fetchMovieDetails();
+  }, [id]);
+
+  if (!movieDetails) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <TopBox>
-      <Bgi src={back} alt="" />
+      <Bgi
+        src={`https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}`}
+        alt=""
+      />
       <Content>
-        <Title>안녕 할부지</Title>
+        <Title>{movieDetails.title}</Title>
         <Text>
-          안녕 할부지 <br />
-          2024 • 다큐멘터리 <br />
-          1시간 35분 <br />
-          예매순위 3위
+          {movieDetails.title} <br />
+          {movieDetails.release_date} •{" "}
+          {movieDetails.genres.map((genre) => genre.name).join(", ")}
+          <br />
+          {movieDetails.runtime}분 •{" "}
+          {movieDetails.adult ? "성인용" : "전체관람가"} <br />
+          예매순위 {movieDetails.vote_average}위
         </Text>
       </Content>
     </TopBox>

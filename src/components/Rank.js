@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { GetRank } from "../api/MainApi";
+import { useNavigate } from "react-router-dom";
 
 const Rank = () => {
   const [rankData, setRankData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +25,7 @@ const Rank = () => {
       <Title>박스오피스 순위</Title>
       <CardBox>
         {rankData.map((movie, index) => (
-          <Card key={movie.id}>
+          <Card key={movie.id} onClick={() => navigate(`/movie/${movie.id}`)}>
             <RankNum>{index + 1}</RankNum>
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -70,6 +72,7 @@ const Card = styled.div`
   border-radius: 5px;
   flex: 0 0 auto;
   position: relative;
+  cursor: pointer;
 
   img {
     width: 250px;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import poster from "../assets/Poster.jpg";
 import { FiPlus } from "react-icons/fi";
@@ -7,16 +7,41 @@ import { HiEye } from "react-icons/hi2";
 import { IoIosMore } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import Banner from "../components/Banner";
+import { useParams } from "react-router-dom";
+import { GetMovie } from "../api/MainApi";
 
 const Detail = () => {
+  const { id } = useParams();
+  const [movieDetails, setMovieDetails] = useState(null);
+
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const result = await GetMovie(id);
+        setMovieDetails(result.data);
+      } catch (error) {
+        console.error("영화상세조회 에러: ", error);
+      }
+    };
+    fetchMovieDetails();
+  }, [id]);
+
+  if (!movieDetails) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <Container>
       <Info>
         <LBox>
-          <Poster src={poster} alt="" />
+          <Poster
+            src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+            alt=""
+          />
           <Graph>
             <p>
-              평균 ★3.4 <span>(6,400명)</span>
+              평균 ★{movieDetails.vote_average}{" "}
+              <span>({movieDetails.popularity})</span>
             </p>
           </Graph>
         </LBox>
@@ -33,8 +58,8 @@ const Detail = () => {
               <p>평가하기</p>
             </Star>
             <Star>
-              <Rate>2.5</Rate>
-              <p>평균 별점 (131명)</p>
+              <Rate>{movieDetails.vote_average}</Rate>
+              <p>평균 별점 ({movieDetails.vote_count}명)</p>
             </Star>
             <IconBox>
               <Icon>
@@ -56,17 +81,7 @@ const Detail = () => {
             </IconBox>
           </StarBox>
           <Banner />
-          <Story>
-            가족들도 못 챙기고 밤낮 없이 범죄들과 싸우는 베테랑 형사
-            '서도철'(황정민)과 강력범죄수사대 형사들. 어느 날, 한 교수의 죽음이
-            이전에 발생했던 살인 사건들과 연관성이 있는 것으로 밝혀지며 전국은
-            연쇄살인범으로 인해 떠들썩해진다. 이에 단서를 추적하며 수사를 시작한
-            형사들. 하지만 이들을 비웃기라도 하듯, 연쇄살인범은 다음 살인 대상을
-            지목하는 예고편을 인터넷에 공개하며 또 한 번 전 국민을 흔들어
-            놓는다. 강력범죄수사대는 서도철의 눈에 든 정의감 넘치는 막내 형사
-            '박선우' (정해인)를 투입한다. 그리고 사건은 새로운 방향으로 흐르게
-            되는데...
-          </Story>
+          <Story>{movieDetails.overview}</Story>
         </RBox>
       </Info>
     </Container>
