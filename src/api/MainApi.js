@@ -13,3 +13,10 @@ export const GetUpcoming = async () => {
     data: response.data,
   };
 };
+
+export const GetMovie = async (id) => {
+  const response = await Axios.get(`/movie/${id}?language=ko-KR`);
+  return {
+    data: response.data,
+  };
+};
