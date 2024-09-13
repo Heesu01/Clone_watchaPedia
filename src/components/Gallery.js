@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
-import { GetImage } from "../api/MainApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetImage, GetSimilar } from "../api/MainApi";
 
 const Gallery = () => {
   const { id } = useParams();
   const [movieImg, setMovieImg] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovieImg = async () => {
@@ -17,6 +19,16 @@ const Gallery = () => {
       }
     };
     fetchMovieImg();
+
+    const fetchSimilarMovies = async () => {
+      try {
+        const result = await GetSimilar(id);
+        setSimilarMovies(result.data.results);
+      } catch (error) {
+        console.error("비슷한작품 조회 에러: ", error);
+      }
+    };
+    fetchSimilarMovies();
   }, [id]);
 
   if (!movieImg || movieImg.length === 0) {
@@ -37,6 +49,23 @@ const Gallery = () => {
           ))}
         </PictureBox>
       </Content>
+      <Content>
+        <Title>비슷한 작품</Title>
+        <PictureBox>
+          {similarMovies.map((movie) => (
+            <GalleryItem
+              key={movie.id}
+              onClick={() => navigate(`/movie/${movie.id}`)}
+            >
+              <PosterImg
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                alt={movie.title}
+              />
+              <p>{movie.title}</p>
+            </GalleryItem>
+          ))}
+        </PictureBox>
+      </Content>
     </Container>
   );
 };
@@ -44,14 +73,14 @@ const Gallery = () => {
 const Container = styled.div`
   background-color: #fff;
   width: 100%;
-  height: 500px;
+  height: auto;
   padding-top: 70px;
 `;
 const Content = styled.div`
   width: 90%;
   margin: auto;
   height: auto;
-  padding-bottom: 35px;
+  padding-bottom: 100px;
 `;
 const Title = styled.div`
   font-size: 23px;
@@ -67,5 +96,18 @@ const PictureBox = styled.div`
 const Picture = styled.img`
   width: 430px;
   height: 290px;
+`;
+
+const GalleryItem = styled.div`
+  margin-right: 20px;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+const PosterImg = styled.img`
+  width: 200px;
+  height: 300px;
+  border-radius: 5px;
+  margin-bottom: 5px;
 `;
 export default Gallery;

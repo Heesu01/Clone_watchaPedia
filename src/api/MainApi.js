@@ -27,3 +27,10 @@ export const GetImage = async (id) => {
     data: response.data,
   };
 };
+
+export const GetSimilar = async (id) => {
+  const response = await Axios.get(`/movie/${id}/similar?language=ko-KR`);
+  return {
+    data: response.data,
+  };
+};
