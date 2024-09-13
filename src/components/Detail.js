@@ -12,6 +12,7 @@ import { GetMovie } from "../api/MainApi";
 const Detail = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const [hover, setHover] = useState(0);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -28,6 +29,14 @@ const Detail = () => {
   if (!movieDetails) {
     return <div>로딩중...</div>;
   }
+
+  const handleMouseEnter = (index) => {
+    setHover(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHover(0);
+  };
 
   return (
     <Container>
@@ -48,11 +57,19 @@ const Detail = () => {
           <StarBox>
             <Star>
               <StarIcon>
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
+                {[...Array(5)].map((_, index) => {
+                  const currentStar = index + 1;
+                  return (
+                    <FaStar
+                      key={index}
+                      size="40"
+                      color={currentStar <= hover ? "red" : "#eee"}
+                      onMouseEnter={() => handleMouseEnter(currentStar)}
+                      onMouseLeave={handleMouseLeave}
+                      style={{ cursor: "pointer" }}
+                    />
+                  );
+                })}
               </StarIcon>
               <p>평가하기</p>
             </Star>
