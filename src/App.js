@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Movie from "./pages/Movie";
 import Layout from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/Movie/:id" element={<Movie />} />
         </Routes>
       </Layout>
+      <ScrollToTop />
     </div>
   );
 }
