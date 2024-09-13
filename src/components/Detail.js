@@ -8,6 +8,7 @@ import { FaStar } from "react-icons/fa";
 import Banner from "../components/Banner";
 import { useParams } from "react-router-dom";
 import { GetMovie } from "../api/MainApi";
+import Loading from "./Loading";
 
 const Detail = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const Detail = () => {
   }, [id]);
 
   if (!movieDetails) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
 
   const handleMouseEnter = (index) => {

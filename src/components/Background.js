@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { GetMovie } from "../api/MainApi";
+import Loading from "./Loading";
 
 const Background = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const Background = () => {
   }, [id]);
 
   if (!movieDetails) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
 
   const formatRuntime = (runtime) => {

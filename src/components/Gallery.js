@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetImage, GetSimilar } from "../api/MainApi";
+import Loading from "./Loading";
 
 const Gallery = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const Gallery = () => {
   }, [id]);
 
   if (!movieImg || movieImg.length === 0) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
 
   return (
