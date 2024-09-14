@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { GetRank } from "../api/MainApi";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const Rank = () => {
   const [rankData, setRankData] = useState([]);
@@ -19,6 +20,10 @@ const Rank = () => {
 
     fetchData();
   }, []);
+
+  if (!rankData) {
+    return <Loading />;
+  }
 
   return (
     <Container>

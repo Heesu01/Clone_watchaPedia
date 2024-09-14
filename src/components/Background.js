@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { GetMovie } from "../api/MainApi";
+import Loading from "./Loading";
 
 const Background = () => {
   const { id } = useParams();
@@ -20,8 +21,14 @@ const Background = () => {
   }, [id]);
 
   if (!movieDetails) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
+
+  const formatRuntime = (runtime) => {
+    const hours = Math.floor(runtime / 60);
+    const minutes = runtime % 60;
+    return `${hours}시간 ${minutes}분`;
+  };
 
   return (
     <TopBox>
@@ -32,13 +39,12 @@ const Background = () => {
       <Content>
         <Title>{movieDetails.title}</Title>
         <Text>
-          {movieDetails.title} <br />
-          {movieDetails.release_date} •{" "}
-          {movieDetails.genres.map((genre) => genre.name).join(", ")}
+          {movieDetails.original_title} <br />
+          {movieDetails.release_date.split("-")[0]} •
+          {movieDetails.genres.map((genre) => genre.name).join("/")}
           <br />
-          {movieDetails.runtime}분 •{" "}
-          {movieDetails.adult ? "성인용" : "전체관람가"} <br />
-          예매순위 {movieDetails.vote_average}위
+          {formatRuntime(movieDetails.runtime)}•
+          {movieDetails.adult ? "청소년관람불가" : "전체"} <br />
         </Text>
       </Content>
     </TopBox>
@@ -48,7 +54,6 @@ const Background = () => {
 const TopBox = styled.div`
   width: 100%;
   height: 500px;
-  background-color: yellow;
 `;
 const Bgi = styled.img`
   width: 100%;

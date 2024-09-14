@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { GetUpcoming } from "../api/MainApi";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const Upcoming = () => {
   const [upcomingData, setUpcomingData] = useState([]);
@@ -18,6 +19,10 @@ const Upcoming = () => {
     };
     fetchData();
   }, []);
+
+  if (!upcomingData) {
+    return <Loading />;
+  }
 
   return (
     <Container>

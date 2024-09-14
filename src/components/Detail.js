@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import poster from "../assets/Poster.jpg";
 import { FiPlus } from "react-icons/fi";
 import { BiSolidPencil } from "react-icons/bi";
 import { HiEye } from "react-icons/hi2";
@@ -9,10 +8,12 @@ import { FaStar } from "react-icons/fa";
 import Banner from "../components/Banner";
 import { useParams } from "react-router-dom";
 import { GetMovie } from "../api/MainApi";
+import Loading from "./Loading";
 
 const Detail = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const [hover, setHover] = useState(0);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -27,8 +28,16 @@ const Detail = () => {
   }, [id]);
 
   if (!movieDetails) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
+
+  const handleMouseEnter = (index) => {
+    setHover(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHover(0);
+  };
 
   return (
     <Container>
@@ -40,8 +49,8 @@ const Detail = () => {
           />
           <Graph>
             <p>
-              평균 ★{movieDetails.vote_average}{" "}
-              <span>({movieDetails.popularity})</span>
+              평균 ★{Math.round(movieDetails.vote_average * 10) / 10}
+              <span>({movieDetails.vote_count}명)</span>
             </p>
           </Graph>
         </LBox>
@@ -49,16 +58,24 @@ const Detail = () => {
           <StarBox>
             <Star>
               <StarIcon>
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
-                <FaStar size="40" />
+                {[...Array(5)].map((_, index) => {
+                  const currentStar = index + 1;
+                  return (
+                    <FaStar
+                      key={index}
+                      size="40"
+                      color={currentStar <= hover ? "red" : "#eee"}
+                      onMouseEnter={() => handleMouseEnter(currentStar)}
+                      onMouseLeave={handleMouseLeave}
+                      style={{ cursor: "pointer" }}
+                    />
+                  );
+                })}
               </StarIcon>
               <p>평가하기</p>
             </Star>
             <Star>
-              <Rate>{movieDetails.vote_average}</Rate>
+              <Rate>{Math.round(movieDetails.vote_average * 10) / 10}</Rate>
               <p>평균 별점 ({movieDetails.vote_count}명)</p>
             </Star>
             <IconBox>
@@ -111,6 +128,11 @@ const Poster = styled.img`
 `;
 const Graph = styled.div`
   padding: 20px 0;
+  span {
+    margin-left: 5px;
+    font-size: 13px;
+    color: gray;
+  }
 `;
 const RBox = styled.div`
   display: flex;
